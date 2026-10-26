@@ -1,0 +1,9 @@
+{
+  "name": "Money Hunter AI",
+  "short_name": "Money Hunter",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#101b2d",
+  "description": "UK money-making opportunity tracker"
+}

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101b2d">
+<title>Money Hunter AI</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#0b1220;--panel:#121e31;--panel2:#17263c;--text:#f4f7fb;--muted:#aab8cb;--accent:#71e0b2;--line:#26364c;--warn:#ffd27d}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#101b2d,#09101b 65%);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:22px 18px 14px;position:sticky;top:0;background:#0b1220ed;backdrop-filter:blur(12px);z-index:2;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:var(--accent);color:#09251c;display:grid;place-items:center;font-size:24px;font-weight:900}
+h1{font-size:21px;margin:0}header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+nav{display:flex;gap:7px;overflow:auto;padding:12px 14px;position:sticky;top:88px;background:#0b1220f2;z-index:2}
+nav button{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 13px;border-radius:999px;white-space:nowrap;font-weight:650}
+nav button.active{background:var(--accent);color:#08251b;border-color:var(--accent)}
+main{max-width:1000px;margin:auto;padding:8px 14px 40px}.view{display:none}.view.active{display:block}
+h2{font-size:22px;margin:18px 0 6px}.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{background:linear-gradient(145deg,var(--panel),#101a2b);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.stat{font-size:27px;font-weight:800;margin-top:6px}.muted{color:var(--muted);font-size:13px}.tag{display:inline-block;border:1px solid #36516b;border-radius:999px;padding:4px 8px;font-size:12px;color:var(--accent);margin:3px 4px 0 0}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px}input,select,textarea{width:100%;background:#091321;color:var(--text);border:1px solid #31445e;border-radius:10px;padding:12px;font:inherit}button,.btn{cursor:pointer;border:0;border-radius:11px;padding:11px 14px;background:var(--accent);color:#08251b;font-weight:750;text-decoration:none;display:inline-block;margin-top:10px}button.secondary,.btn.secondary{background:#20324b;color:var(--text);border:1px solid #344963}button.danger{background:#442631;color:#ffdce2}.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.item{padding:13px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.item strong{display:block;margin-bottom:3px}.money{color:var(--accent);font-weight:800}.warning{color:var(--warn)}.empty{color:var(--muted);padding:15px 0}.checkrow{display:flex;gap:9px;align-items:flex-start;padding:8px 0}.checkrow input{width:auto;margin-top:4px}.foot{color:var(--muted);font-size:12px;line-height:1.5;margin:18px 0}.smallbtn{padding:7px 10px;font-size:12px;margin-right:5px}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">MH</div><div><h1>Money Hunter AI</h1><p>Find it. Calculate it. Track it. Keep more.</p></div></div></header>
+<nav id="nav">
+<button class="active" data-view="home">Home</button><button data-view="deals">Deal Hunter</button><button data-view="switches">Bank Switches</button><button data-view="rewards">Rewards</button><button data-view="scrap">Scrap</button><button data-view="crypto">Crypto</button><button data-view="tracker">Track Money</button>
+</nav>
+<main>
+<section id="home" class="view active">
+<h2>Today's money dashboard</h2><p class="sub">Your opportunity hub. Demo examples are clearly marked until live data sources are connected.</p>
+<div class="grid">
+<div class="card"><div class="muted">Realised profit recorded</div><div class="stat" id="statProfit">£0.00</div></div>
+<div class="card"><div class="muted">Rewards paid</div><div class="stat" id="statRewards">£0.00</div></div>
+<div class="card"><div class="muted">Saved opportunities</div><div class="stat" id="statSaved">0</div></div>
+</div>
+<div class="card"><h3>Best opportunities to check</h3><div class="item"><strong>Bank-switch bonus check</strong><span class="muted">Review official eligibility and qualifying steps before applying.</span><br><span class="tag">Potential reward</span></div><div class="item"><strong>Cross-marketplace resale</strong><span class="muted">Compare a local asking price with eBay resale evidence and all costs.</span><br><span class="tag">Electronics · Tools · Gaming</span></div><div class="item"><strong>Cashback and rewards</strong><span class="muted">Calculate net value after any required spending.</span><br><span class="tag">Verify terms</span></div><p class="foot">These are starter prompts, not verified live offers. The app does not yet automatically scan marketplaces or fetch live bank, scrap or crypto prices.</p></div>
+</section>
+
+<section id="deals" class="view">
+<h2>Deal Hunter</h2><p class="sub">Estimate a resale deal before you spend. Choose a category and calculate the likely return.</p>
+<div class="card">
+<div class="row"><div><label>Item / search keywords</label><input id="dealName" placeholder="e.g. cordless drill set"></div><div><label>Category</label><select id="dealCategory"><option>Electronics</option><option>Tools</option><option>Gaming</option><option>Home bargains</option><option>Phones</option><option>Furniture</option><option>Collectibles</option><option>Anything profitable</option></select></div></div>
+<div class="row"><div><label>Buying price (£)</label><input id="buy" type="number" min="0" step=".01" value="25"></div><div><label>Expected resale price (£)</label><input id="sell" type="number" min="0" step=".01" value="60"></div></div>
+<div class="row"><div><label>Selling fees (£)</label><input id="fees" type="number" min="0" step=".01" value="6"></div><div><label>Postage & packaging (£)</label><input id="postage" type="number" min="0" step=".01" value="5"></div></div>
+<div class="row"><div><label>Travel / collection (£)</label><input id="travel" type="number" min="0" step=".01" value="2"></div><div><label>Repairs / other costs (£)</label><input id="other" type="number" min="0" step=".01" value="2"></div></div>
+<div class="grid"><div class="card"><div class="muted">Estimated net profit</div><div class="stat money" id="net">£20.00</div></div><div class="card"><div class="muted">Return on investment</div><div class="stat" id="roi">58.8%</div></div><div class="card"><div class="muted">Maximum buy price for £20 profit</div><div class="stat" id="maxbuy">£25.00</div></div></div>
+<label>Target profit (£)</label><input id="target" type="number" min="0" step=".01" value="20">
+<button id="saveDeal">Save this deal</button>
+<a class="btn secondary" id="ebayLink" target="_blank" rel="noopener">Search eBay UK</a>
+<a class="btn secondary" id="fbLink" target="_blank" rel="noopener">Search Facebook Marketplace</a>
+<p class="foot">Resale price is your estimate unless supported sold-price evidence is added. Search links open the marketplace; they do not mean listings have been automatically scanned.</p>
+</div>
+<div class="card"><h3>Saved deals</h3><div id="savedDeals" class="empty">No saved deals yet.</div></div>
+</section>
+
+<section id="switches" class="view">
+<h2>Bank Switch Hunter</h2><p class="sub">Keep track of offers and the steps you need to complete. Verify every offer on the bank's official website.</p>
+<div class="card"><label>Bank / offer name</label><input id="bankName" placeholder="Bank and offer name"><div class="row"><div><label>Advertised bonus (£)</label><input id="bankBonus" type="number" min="0" step=".01" placeholder="e.g. 175"></div><div><label>Deadline</label><input id="bankDate" type="date"></div></div><label>Official offer URL</label><input id="bankUrl" type="url" placeholder="https://..."><label>Requirements / notes</label><textarea id="bankNotes" rows="2" placeholder="Funding, direct debits, eligibility, exclusions..."></textarea><button id="addBank">Add bank offer</button></div>
+<div class="card"><h3>Tracked offers</h3><div id="bankList" class="empty">No offers tracked yet.</div></div>
+</section>
+
+<section id="rewards" class="view">
+<h2>Rewards & Cashback</h2><p class="sub">Track cashbacks, referral bonuses, vouchers, loyalty rewards and legitimate freebies.</p>
+<div class="card"><label>Offer name</label><input id="rewardName" placeholder="Cashback / referral / loyalty offer"><div class="row"><div><label>Expected value (£)</label><input id="rewardValue" type="number" min="0" step=".01" placeholder="0"></div><div><label>Required spend (£)</label><input id="rewardSpend" type="number" min="0" step=".01" placeholder="0"></div></div><label>Expiry date</label><input id="rewardDate" type="date"><label>Terms URL</label><input id="rewardUrl" type="url" placeholder="https://..."><button id="addReward">Add reward</button></div>
+<div class="card"><h3>Your rewards</h3><div id="rewardList" class="empty">No rewards tracked yet.</div></div>
+</section>
+
+<section id="scrap" class="view">
+<h2>Scrap & Recycling</h2><p class="sub">Estimate value from a price you have verified with a local yard. Prices vary by grade, cleanliness, quantity and location.</p>
+<div class="card"><div class="row"><div><label>Material</label><select id="metal"><option>Copper</option><option>Brass</option><option>Aluminium</option><option>Lead</option><option>Steel</option><option>Other</option></select></div><div><label>Verified price (£ per kg)</label><input id="metalPrice" type="number" min="0" step=".01" value="0"></div></div><div class="row"><div><label>Estimated weight (kg)</label><input id="metalWeight" type="number" min="0" step=".1" value="0"></div><div><label>Travel / other costs (£)</label><input id="metalCost" type="number" min="0" step=".01" value="0"></div></div><div class="stat money" id="scrapTotal">Estimated return: £0.00</div><button id="saveScrap">Record scrap estimate</button><p class="foot">Use only material you legally own or are authorised to sell. Confirm the price and accepted material with the yard before travelling.</p></div><div class="card"><h3>Recorded estimates</h3><div id="scrapList" class="empty">No estimates recorded.</div></div>
+</section>
+
+<section id="crypto" class="view">
+<h2>Crypto Watch</h2><p class="sub">A manual checklist for Bitcoin and Solana. Live market feeds are not connected in this starter build.</p>
+<div class="card"><label>Asset</label><select id="asset"><option>Bitcoin (BTC)</option><option>Solana (SOL)</option></select><div class="row"><div><label>Current price (£)</label><input id="cryptoPrice" type="number" min="0" step=".01"></div><div><label>Resistance to watch (£)</label><input id="resistance" type="number" min="0" step=".01"></div></div><div class="checkrow"><input id="trend" type="checkbox"><label for="trend">Trend appears stable or improving</label></div><div class="checkrow"><input id="breakout" type="checkbox"><label for="breakout">Price has broken resistance</label></div><div class="checkrow"><input id="volume" type="checkbox"><label for="volume">Volume confirms the move</label></div><div class="checkrow"><input id="btcStrength" type="checkbox"><label for="btcStrength">Bitcoin market strength supports the move</label></div><button id="checkCrypto">Review checklist</button><div id="cryptoResult" class="item muted">Complete the checklist to review the signals.</div><p class="foot">Crypto can lose substantial value. This checklist is informational and does not guarantee returns or place trades.</p></div>
+</section>
+
+<section id="tracker" class="view">
+<h2>Track Money</h2><p class="sub">Record real transactions separately from estimates.</p>
+<div class="card"><div class="row"><div><label>Transaction</label><select id="txType"><option value="sale">Sale income</option><option value="purchase">Purchase cost</option><option value="fee">Fees / postage</option><option value="reward">Reward paid</option><option value="other">Other cost</option></select></div><div><label>Amount (£)</label><input id="txAmount" type="number" step=".01" min="0" placeholder="0.00"></div></div><label>Note</label><input id="txNote" placeholder="e.g. sold game console"><button id="addTx">Record transaction</button></div><div class="grid"><div class="card"><div class="muted">Recorded net profit</div><div class="stat money" id="ledgerProfit">£0.00</div></div><div class="card"><div class="muted">Rewards paid</div><div class="stat" id="ledgerRewards">£0.00</div></div></div><div class="card"><h3>Transaction history</h3><div id="txList" class="empty">No transactions recorded.</div><button class="secondary" id="exportData">Export data (JSON)</button> <button class="danger" id="clearData">Clear all saved data</button></div>
+</section>
+<p class="foot">Starter prototype: data is saved in this browser on this device. It is not yet synced to an account, backed up, or connected to live marketplace/bank/crypto feeds. Never enter bank passwords, card numbers, exchange credentials or other secrets.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'£'+(Number(n)||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
+const load=()=>{try{return JSON.parse(localStorage.getItem('mhai')||'{"deals":[],"banks":[],"rewards":[],"scrap":[],"tx":[]}')}catch(e){return {deals:[],banks:[],rewards:[],scrap:[],tx:[]}}};
+let db=load(); function save(){localStorage.setItem('mhai',JSON.stringify(db));render()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function go(view){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===view));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===view));window.scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.view));
+function calc(){let buy=+$('buy').value||0,sell=+$('sell').value||0,fees=+$('fees').value||0,post=+$('postage').value||0,travel=+$('travel').value||0,other=+$('other').value||0,target=+$('target').value||0;let costs=buy+fees+post+travel+other,profit=sell-costs; $('net').textContent=money(profit);$('roi').textContent=(costs>0?(profit/costs*100):0).toFixed(1)+'%';$('maxbuy').textContent=money(Math.max(0,sell-fees-post-travel-other-target));let q=$('dealName').value.trim()||'used bargains';$('ebayLink').href='https://www.ebay.co.uk/sch/i.html?_nkw='+encodeURIComponent(q);$('fbLink').href='https://www.facebook.com/marketplace/search/?query='+encodeURIComponent(q)}
+['buy','sell','fees','postage','travel','other','target','dealName'].forEach(id=>$(id).addEventListener('input',calc));calc();
+$('saveDeal').onclick=()=>{if(!$('dealName').value.trim()){alert('Enter an item or search keyword first.');return}let d={id:Date.now(),name:$('dealName').value,category:$('dealCategory').value,buy:+$('buy').value||0,sell:+$('sell').value||0,fees:+$('fees').value||0,post:+$('postage').value||0,travel:+$('travel').value||0,other:+$('other').value||0,profit:(+$('sell').value||0)-((+$('buy').value||0)+(+$('fees').value||0)+(+$('postage').value||0)+(+$('travel').value||0)+(+$('other').value||0)),status:'Saved'};db.deals.unshift(d);save();alert('Deal saved on this device.')};
+$('addBank').onclick=()=>{let name=$('bankName').value.trim();if(!name){alert('Enter the bank or offer name.');return}db.banks.unshift({id:Date.now(),name,bonus:+$('bankBonus').value||0,date:$('bankDate').value,url:$('bankUrl').value.trim(),notes:$('bankNotes').value.trim(),status:'Interested'});save();['bankName','bankBonus','bankDate','bankUrl','bankNotes'].forEach(x=>$(x).value='')};
+$('addReward').onclick=()=>{let name=$('rewardName').value.trim();if(!name){alert('Enter an offer name.');return}db.rewards.unshift({id:Date.now(),name,value:+$('rewardValue').value||0,spend:+$('rewardSpend').value||0,date:$('rewardDate').value,url:$('rewardUrl').value.trim(),status:'Pending'});save();['rewardName','rewardValue','rewardSpend','rewardDate','rewardUrl'].forEach(x=>$(x).value='')};
+function scrapCalc(){ $('scrapTotal').textContent='Estimated return: '+money((+$('metalPrice').value||0)*(+$('metalWeight').value||0)-(+$('metalCost').value||0))}
+['metalPrice','metalWeight','metalCost'].forEach(x=>$(x).addEventListener('input',scrapCalc));
+$('saveScrap').onclick=()=>{let r={id:Date.now(),metal:$('metal').value,price:+$('metalPrice').value||0,weight:+$('metalWeight').value||0,cost:+$('metalCost').value||0};r.net=r.price*r.weight-r.cost;db.scrap.unshift(r);save()};
+$('checkCrypto').onclick=()=>{let items=['trend','breakout','volume','btcStrength'],n=items.filter(x=>$(x).checked).length;$('cryptoResult').innerHTML='<strong>'+n+' of 4 checklist signals marked.</strong><br>'+ (n===4?'All selected checklist signals are present. Review the wider market and risk before making a decision.':n>=2?'Some signals are present; the setup is not fully confirmed by this checklist.':'Few confirmation signals are marked. Consider waiting for more evidence.')+'<br><span class="warning">Not a guarantee or personalised financial advice.</span>'};
+$('addTx').onclick=()=>{let amount=+$('txAmount').value||0;if(amount<=0){alert('Enter an amount greater than zero.');return}db.tx.unshift({id:Date.now(),type:$('txType').value,amount,note:$('txNote').value.trim(),date:new Date().toISOString().slice(0,10)});save();$('txAmount').value='';$('txNote').value=''};
+function del(arr,id){db[arr]=db[arr].filter(x=>x.id!==id);save()}
+function render(){ $('savedDeals').innerHTML=db.deals.length?db.deals.map(d=>`<div class="item"><strong>${esc(d.name)} <span class="tag">${esc(d.category)}</span></strong><span class="muted">Buy ${money(d.buy)} · Resale ${money(d.sell)} · Estimated profit <b class="${d.profit>=0?'money':'warning'}">${money(d.profit)}</b></span><br><button class="smallbtn secondary" onclick="del('deals',${d.id})">Remove</button></div>`).join(''):'<div class="empty">No saved deals yet.</div>';
+$('bankList').innerHTML=db.banks.length?db.banks.map(b=>`<div class="item"><strong>${esc(b.name)} · ${money(b.bonus)}</strong><span class="muted">Deadline: ${esc(b.date||'Not set')} · Status: </span><select onchange="setStatus('banks',${b.id},this.value)">${['Interested','Checking eligibility','In progress','Requirements complete','Bonus pending','Paid','Not eligible','Expired'].map(s=>`<option ${s===b.status?'selected':''}>${s}</option>`).join('')}</select><p class="muted">${esc(b.notes)}</p>${b.url?`<a class="btn secondary" target="_blank" rel="noopener" href="${esc(b.url)}">Open offer</a>`:''}<button class="smallbtn secondary" onclick="del('banks',${b.id})">Remove</button></div>`).join(''):'<div class="empty">No offers tracked yet.</div>';
+$('rewardList').innerHTML=db.rewards.length?db.rewards.map(r=>`<div class="item"><strong>${esc(r.name)} · ${money(r.value)}</strong><span class="muted">Required spend ${money(r.spend)} · Net value before other costs ${money(r.value-r.spend)} · Expiry ${esc(r.date||'Not set')}</span><br><select onchange="setStatus('rewards',${r.id},this.value)">${['Pending','Tracked','Claimed','Paid','Expired','Not eligible'].map(s=>`<option ${s===r.status?'selected':''}>${s}</option>`).join('')}</select> ${r.url?`<a target="_blank" rel="noopener" href="${esc(r.url)}">Terms</a>`:''} <button class="smallbtn secondary" onclick="del('rewards',${r.id})">Remove</button></div>`).join(''):'<div class="empty">No rewards tracked yet.</div>';
+$('scrapList').innerHTML=db.scrap.length?db.scrap.map(s=>`<div class="item"><strong>${esc(s.metal)} · ${s.weight} kg</strong><span class="muted">${money(s.price)}/kg · costs ${money(s.cost)} · estimated return <b>${money(s.net)}</b></span><button class="smallbtn secondary" onclick="del('scrap',${s.id})">Remove</button></div>`).join(''):'<div class="empty">No estimates recorded.</div>';
+let profit=db.tx.reduce((a,t)=>a+(t.type==='sale'?t.amount:t.type==='reward'?t.amount:-t.amount),0),rewards=db.tx.filter(t=>t.type==='reward').reduce((a,t)=>a+t.amount,0);$('ledgerProfit').textContent=money(profit);$('ledgerRewards').textContent=money(rewards);$('statProfit').textContent=money(profit);$('statRewards').textContent=money(rewards);$('statSaved').textContent=db.deals.length+db.banks.length+db.rewards.length;
+$('txList').innerHTML=db.tx.length?db.tx.map(t=>`<div class="item"><strong>${esc(t.type.toUpperCase())} · ${money(t.amount)}</strong><span class="muted">${esc(t.date)} · ${esc(t.note)}</span><button class="smallbtn secondary" onclick="del('tx',${t.id})">Remove</button></div>`).join(''):'<div class="empty">No transactions recorded.</div>'}
+window.setStatus=(arr,id,status)=>{let x=db[arr].find(x=>x.id===id);if(x){x.status=status;save()}};
+$('exportData').onclick=()=>{let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='money-hunter-ai-data.json';a.click();URL.revokeObjectURL(a.href)};
+$('clearData').onclick=()=>{if(confirm('Clear all Money Hunter AI data saved in this browser? This cannot be undone.')){db={deals:[],banks:[],rewards:[],scrap:[],tx:[]};save()}};
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body></html>
